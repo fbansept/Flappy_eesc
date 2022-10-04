@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Oiseau extends Carre {
+public class Oiseau extends Carre implements Deplacable{
 
     protected float vitesseVertical;
 
@@ -12,8 +12,13 @@ public class Oiseau extends Carre {
     }
 
     public Oiseau(int hauteurEcran) {
-        super(50, hauteurEcran / 2 - HAUTEUR_OISEAU / 2, HAUTEUR_OISEAU);
+        super(50, 0, HAUTEUR_OISEAU);
+        reinitialiser(hauteurEcran);
         this.vitesseVertical = 0;
+    }
+    public void reinitialiser(int hauteurEcran) {
+        y = hauteurEcran / 2 - HAUTEUR_OISEAU / 2;
+        vitesseVertical = 0;
     }
 
     @Override
@@ -22,8 +27,18 @@ public class Oiseau extends Carre {
         dessin.fillRect(x,y,largeur,largeur);
     }
 
-    public void deplacement() {
-        y -= vitesseVertical;
+    @Override
+    public void deplacer() {
+
+        //petite correction de la gravité, pour eviter un temps de flotement
+        //si la vitesse est comprise entre -O,1 et -0,9
+        // on augmente legerement la gravité
+        if(vitesseVertical % 10 != 0 && vitesseVertical < 0) {
+            y -= vitesseVertical - 0.5f ;
+        } else {
+            y -= vitesseVertical;
+        }
+
         vitesseVertical -= 0.05f;
 
         if(y < 0) {

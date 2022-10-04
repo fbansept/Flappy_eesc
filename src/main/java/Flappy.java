@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Flappy extends Canvas implements KeyListener {
 
@@ -11,6 +12,10 @@ public class Flappy extends Canvas implements KeyListener {
     protected boolean pause = false;
 
     protected Oiseau oiseau;
+    protected Tuyau tuyau;
+
+    protected ArrayList<Deplacable> listeDeplacable = new ArrayList<>();
+
     public Flappy() throws InterruptedException {
 
         JFrame fenetre = new JFrame("Flappy");
@@ -37,14 +42,23 @@ public class Flappy extends Canvas implements KeyListener {
         this.setIgnoreRepaint(true);
         this.setFocusable(false);
 
-
-
         this.demarrer();
     }
     public void initialiser() {
-        oiseau = new Oiseau(hauteurEcran);
-        oiseau.setVitesseVertical(-1);
-        pause = false;
+
+        //si c'est la première initialisation
+        if(oiseau == null) {
+            oiseau = new Oiseau(hauteurEcran);
+            oiseau.setVitesseVertical(-1);
+            pause = false;
+            tuyau = new Tuyau(200, hauteurEcran, largeurEcran);
+
+            listeDeplacable = new ArrayList<>();
+            listeDeplacable.add(tuyau);
+            listeDeplacable.add(oiseau);
+        } else {
+            oiseau.reinitialiser(hauteurEcran);
+        }
     }
 
     public void demarrer() throws InterruptedException {
@@ -54,6 +68,7 @@ public class Flappy extends Canvas implements KeyListener {
         initialiser();
 
         while(true) {
+
             indexFrame ++;
             Graphics2D dessin = (Graphics2D) getBufferStrategy().getDrawGraphics();
 
@@ -63,6 +78,8 @@ public class Flappy extends Canvas implements KeyListener {
             dessin.fillRect(0,0,largeurEcran,hauteurEcran);
 
             oiseau.dessiner(dessin);
+            tuyau.dessiner(dessin);
+
 
             if(!pause) {
                 //-----si jamais l'oiseau est tombé par terre ---
@@ -71,7 +88,12 @@ public class Flappy extends Canvas implements KeyListener {
                     pause = true;
                 } else {
                     //----sinon si le jeu continu ----
-                    oiseau.deplacement();
+//                    oiseau.deplacer();
+//                    tuyau.deplacer();
+
+                    for(Deplacable deplacable : listeDeplacable) {
+                        deplacable.deplacer();
+                    }
                 }
             } else {
                 dessin.setColor(new Color(0,0,0,0.1f));
