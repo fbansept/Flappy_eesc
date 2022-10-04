@@ -19,6 +19,9 @@ public abstract class Sprite {
 
     public abstract void dessiner(Graphics2D dessin);
 
+    public abstract int getCentreX();
+    public abstract int getCentreY();
+
     public int getX() {
         return x;
     }
