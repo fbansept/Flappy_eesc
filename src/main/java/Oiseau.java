@@ -25,6 +25,10 @@ public class Oiseau extends Carre {
     public void deplacement() {
         y -= vitesseVertical;
         vitesseVertical -= 0.05f;
+
+        if(y < 0) {
+            vitesseVertical = Math.abs(vitesseVertical) * - 1;
+        }
     }
 
     public void sauter() {

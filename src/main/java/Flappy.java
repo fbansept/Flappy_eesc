@@ -8,6 +8,8 @@ public class Flappy extends Canvas implements KeyListener {
     protected int largeurEcran = 600;
     protected int hauteurEcran = 600;
 
+    protected boolean pause = false;
+
     protected Oiseau oiseau;
     public Flappy() throws InterruptedException {
 
@@ -39,13 +41,17 @@ public class Flappy extends Canvas implements KeyListener {
 
         this.demarrer();
     }
+    public void initialiser() {
+        oiseau = new Oiseau(hauteurEcran);
+        oiseau.setVitesseVertical(-1);
+        pause = false;
+    }
 
     public void demarrer() throws InterruptedException {
 
         long indexFrame = 0;
 
-        oiseau = new Oiseau(hauteurEcran);
-        oiseau.setVitesseVertical(-1);
+        initialiser();
 
         while(true) {
             indexFrame ++;
@@ -58,12 +64,19 @@ public class Flappy extends Canvas implements KeyListener {
 
             oiseau.dessiner(dessin);
 
-            if(oiseau.getY() > hauteurEcran - oiseau.getLargeur()) {
-                System.out.println("perdu");
+            if(!pause) {
+                //-----si jamais l'oiseau est tombé par terre ---
+                if (oiseau.getY() > hauteurEcran - oiseau.getLargeur()) {
+                    System.out.println("perdu");
+                    pause = true;
+                } else {
+                    //----sinon si le jeu continu ----
+                    oiseau.deplacement();
+                }
             } else {
-                oiseau.deplacement();
+                dessin.setColor(new Color(0,0,0,0.1f));
+                dessin.fillRect(0,0,largeurEcran,hauteurEcran);
             }
-
             //-----------------------------
             dessin.dispose();
             getBufferStrategy().show();
@@ -88,7 +101,16 @@ public class Flappy extends Canvas implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            System.out.println("JUMP !");
+            oiseau.setVitesseVertical(2);
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            initialiser();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_P){
+            //inverser un booléen
+            pause = !pause;
         }
     }
 }
