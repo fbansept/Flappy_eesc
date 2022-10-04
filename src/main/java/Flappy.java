@@ -5,8 +5,8 @@ import java.awt.event.KeyListener;
 
 public class Flappy extends Canvas implements KeyListener {
 
-    protected int largeurEcran = 300;
-    protected int hauteurEcran = 300;
+    protected int largeurEcran = 600;
+    protected int hauteurEcran = 600;
 
     protected Oiseau oiseau;
     public Flappy() throws InterruptedException {
@@ -45,6 +45,7 @@ public class Flappy extends Canvas implements KeyListener {
         long indexFrame = 0;
 
         oiseau = new Oiseau(hauteurEcran);
+        oiseau.setVitesseVertical(-1);
 
         while(true) {
             indexFrame ++;
@@ -56,6 +57,12 @@ public class Flappy extends Canvas implements KeyListener {
             dessin.fillRect(0,0,largeurEcran,hauteurEcran);
 
             oiseau.dessiner(dessin);
+
+            if(oiseau.getY() > hauteurEcran - oiseau.getLargeur()) {
+                System.out.println("perdu");
+            } else {
+                oiseau.deplacement();
+            }
 
             //-----------------------------
             dessin.dispose();

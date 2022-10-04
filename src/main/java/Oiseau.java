@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class Oiseau extends Carre {
 
-    protected int vitesseVertical;
+    protected float vitesseVertical;
 
     protected final static int HAUTEUR_OISEAU = 40;
 
@@ -22,15 +22,20 @@ public class Oiseau extends Carre {
         dessin.fillRect(x,y,largeur,largeur);
     }
 
+    public void deplacement() {
+        y -= vitesseVertical;
+        vitesseVertical -= 0.05f;
+    }
+
     public void sauter() {
 
     }
 
-    public int getVitesseVertical() {
+    public float getVitesseVertical() {
         return vitesseVertical;
     }
 
-    public void setVitesseVertical(int vitesseVertical) {
+    public void setVitesseVertical(float vitesseVertical) {
         this.vitesseVertical = vitesseVertical;
     }
 }
