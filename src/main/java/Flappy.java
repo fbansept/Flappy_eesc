@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Flappy extends Canvas implements KeyListener {
 
-    protected int largeurEcran = 600;
-    protected int hauteurEcran = 600;
+    protected static int largeurEcran = 600;
+    protected static int hauteurEcran = 600;
 
     protected boolean pause = false;
 
@@ -15,6 +15,7 @@ public class Flappy extends Canvas implements KeyListener {
     protected Tuyau tuyau;
 
     protected ArrayList<Deplacable> listeDeplacable = new ArrayList<>();
+    protected ArrayList<Sprite> listeSprite = new ArrayList<>();
 
     public Flappy() throws InterruptedException {
 
@@ -46,18 +47,24 @@ public class Flappy extends Canvas implements KeyListener {
     }
     public void initialiser() {
 
+        pause = false;
+
         //si c'est la première initialisation
         if(oiseau == null) {
             oiseau = new Oiseau(hauteurEcran);
-            oiseau.setVitesseVertical(-1);
-            pause = false;
             tuyau = new Tuyau(200, hauteurEcran, largeurEcran);
-
-            listeDeplacable = new ArrayList<>();
+            Nuage nuage = new Nuage(largeurEcran,  hauteurEcran);
             listeDeplacable.add(tuyau);
             listeDeplacable.add(oiseau);
+            listeDeplacable.add(nuage);
+
+            listeSprite.add(tuyau);
+            listeSprite.add(oiseau);
+            listeSprite.add(nuage);
         } else {
-            oiseau.reinitialiser(hauteurEcran);
+            for(Deplacable deplacable : listeDeplacable) {
+                deplacable.reinitialiser(largeurEcran,hauteurEcran);
+            }
         }
     }
 
@@ -77,9 +84,9 @@ public class Flappy extends Canvas implements KeyListener {
             dessin.setColor(Color.WHITE);
             dessin.fillRect(0,0,largeurEcran,hauteurEcran);
 
-            oiseau.dessiner(dessin);
-            tuyau.dessiner(dessin);
-
+            for(Sprite sprite : listeSprite) {
+                sprite.dessiner(dessin);
+            }
 
             if(!pause) {
                 //-----si jamais l'oiseau est tombé par terre ---
