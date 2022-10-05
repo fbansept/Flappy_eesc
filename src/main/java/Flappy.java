@@ -102,9 +102,6 @@ public class Flappy extends Canvas implements KeyListener {
                     System.out.println("perdu");
                     pause = true;
                 } else {
-                    //----sinon si le jeu continu ----
-//                    oiseau.deplacer();
-//                    tuyau.deplacer();
 
                     for(Deplacable deplacable : listeDeplacable) {
                         deplacable.deplacer(largeurEcran, hauteurEcran);
