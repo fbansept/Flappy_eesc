@@ -78,13 +78,15 @@ public class Flappy extends Canvas implements KeyListener {
 
     public void demarrer() throws InterruptedException {
 
-        long indexFrame = 0;
+        long point = 0;
 
         initialiser();
 
+        Font police = new Font("Calibri",Font.BOLD,24);
+
         while(true) {
 
-            indexFrame ++;
+
             Graphics2D dessin = (Graphics2D) getBufferStrategy().getDrawGraphics();
 
             //-----------------------------
@@ -96,12 +98,21 @@ public class Flappy extends Canvas implements KeyListener {
                 sprite.dessiner(dessin);
             }
 
+            //affichage HUD
+            dessin.setColor(Color.BLACK);
+            dessin.setFont(police);
+            dessin.drawString(
+                    String.valueOf(point),
+                    largeurEcran - 100,
+                    50);
+
             if(!pause) {
                 //-----si jamais l'oiseau est tombé par terre ---
                 if (oiseau.getY() > hauteurEcran - oiseau.getLargeur()) {
                     System.out.println("perdu");
                     pause = true;
                 } else {
+                    point ++;
 
                     for(Deplacable deplacable : listeDeplacable) {
                         deplacable.deplacer(largeurEcran, hauteurEcran);
@@ -111,6 +122,9 @@ public class Flappy extends Canvas implements KeyListener {
                         System.out.println("perdu");
                         pause = true;
                     }
+
+
+
 
                 }
             } else {
