@@ -30,7 +30,7 @@ public class Oiseau extends Carre implements Deplacable{
     }
 
     @Override
-    public void deplacer() {
+    public void deplacer(int largeurEcran, int hauteurEcran) {
 
         //petite correction de la gravité, pour eviter un temps de flotement
         //si la vitesse est comprise entre -O,1 et -0,9
